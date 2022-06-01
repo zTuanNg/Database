@@ -28,15 +28,17 @@ inner join title_type tt
 	on m.id_title_type = tt.id 
 where m.episode  = m.current_episode and tt.name = 'TV Series'
 
--- 4 => 150 records
+-- 4 => 113 records
+-- =>  1 film có nhiều link trailer
 
-select m.title , t.link as link_trailer
+select m.title , json_arrayagg(t.link) as link_trailer
 from movie m 
 left join movie_trailer mt 
 	on m.id = mt.id_movie 
 left join trailer t 
 	on mt.id_trailer = t.id 
 where mt.status = 'active'
+group by m.id 
 
 -- 5 = 27 records
 select m.title , m.description , m.poster, m.`length` , m.imdb 
